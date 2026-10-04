@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+<div class="auth-brand-panel">
+  <span class="auth-kicker">PG Management</span>
+  <h1>SKY LINE</h1>
+  <p>Track rooms, tenants, deposits, and live bed vacancies from one calm dashboard.</p>
+</div>
+<div class="auth-card">
+  <div class="auth-logo">S</div>
+  <h2 class="h3 mb-2">Welcome back</h2>
+  <p class="text-secondary mb-4">Login to manage SKY LINE.</p>
+  <form action="/login" method="post" class="vstack gap-3">
+    <div>
+      <label class="form-label" for="email">Email</label>
+      <input class="form-control" id="email" name="email" type="email" required>
+    </div>
+    <div>
+      <label class="form-label" for="password">Password</label>
+      <input class="form-control" id="password" name="password" type="password" required>
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Login</button>
+  </form>
+  <p class="mt-4 mb-0 text-center text-secondary">New owner? <a href="/register">Create account</a></p>
+</div>
+<%- include('../partials/footer') %>

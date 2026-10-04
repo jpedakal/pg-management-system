@@ -1,0 +1,102 @@
+<%- include('../partials/header') %>
+<div class="admin-hero">
+  <div>
+    <span class="dashboard-kicker">Room Inventory</span>
+    <h1>Rooms</h1>
+    <p>Rooms create bed slots automatically from the sharing capacity.</p>
+  </div>
+  <a class="btn btn-light hero-action" href="/floors">Manage Floors</a>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <section class="content-card admin-panel">
+      <div class="section-heading">
+        <div>
+          <span>New room</span>
+          <h2>Add Room</h2>
+        </div>
+      </div>
+      <form action="/rooms" method="post" class="vstack gap-3">
+        <div>
+          <label class="form-label" for="floorId">Floor</label>
+          <select class="form-select" id="floorId" name="floorId" required>
+            <option value="">Choose floor</option>
+            <% floors.forEach(function(floor) { %>
+              <option value="<%= floor._id %>"><%= floor.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="roomNumber">Room number</label>
+          <input class="form-control" id="roomNumber" name="roomNumber" placeholder="101" required>
+        </div>
+        <div>
+          <label class="form-label" for="sharingType">Sharing capacity</label>
+          <input class="form-control" id="sharingType" name="sharingType" type="number" min="1" required>
+        </div>
+        <div>
+          <label class="form-label" for="monthlyRent">Monthly rent</label>
+          <input class="form-control" id="monthlyRent" name="monthlyRent" type="number" min="0" required>
+        </div>
+        <button class="btn btn-primary" type="submit" <%= floors.length ? '' : 'disabled' %>>Add Room</button>
+      </form>
+    </section>
+  </div>
+  <div class="col-lg-8">
+    <section class="content-card admin-panel">
+      <div class="section-heading">
+        <div>
+          <span>Current rooms</span>
+          <h2>Existing Rooms</h2>
+        </div>
+      </div>
+      <% if (!rooms.length) { %>
+        <p class="text-secondary mb-0">No rooms added yet.</p>
+      <% } %>
+      <div class="vstack gap-3">
+        <% rooms.forEach(function(room) {
+          const counts = countsByRoom[room._id.toString()] || { total: 0, occupied: 0 };
+          const available = counts.total - counts.occupied;
+        %>
+          <div class="room-admin-row elevated-row">
+            <form action="/rooms/<%= room._id %>?_method=PUT" method="post" class="row g-2 align-items-end flex-grow-1">
+              <div class="col-md-3">
+                <label class="form-label">Floor</label>
+                <select class="form-select" name="floorId" required>
+                  <% floors.forEach(function(floor) { %>
+                    <option value="<%= floor._id %>" <%= room.floorId && floor._id.toString() === room.floorId._id.toString() ? 'selected' : '' %>><%= floor.name %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Room</label>
+                <input class="form-control" name="roomNumber" value="<%= room.roomNumber %>" required>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Sharing</label>
+                <input class="form-control" name="sharingType" type="number" min="1" value="<%= room.sharingType %>" required>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Rent</label>
+                <input class="form-control" name="monthlyRent" type="number" min="0" value="<%= room.monthlyRent %>" required>
+              </div>
+              <div class="col-md-3 action-col">
+                <button class="btn btn-outline-primary w-100" type="submit">Save</button>
+              </div>
+              <div class="col-12">
+                <span class="badge text-bg-secondary"><%= counts.total %> beds</span>
+                <span class="badge text-bg-warning"><%= counts.occupied %> occupied</span>
+                <span class="badge text-bg-success"><%= available %> available</span>
+              </div>
+            </form>
+            <form class="row-action-form" action="/rooms/<%= room._id %>?_method=DELETE" method="post" onsubmit="return confirm('Delete this room and its available beds?');">
+              <button class="btn btn-outline-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  </div>
+</div>
+<%- include('../partials/footer') %>

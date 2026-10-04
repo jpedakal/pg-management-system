@@ -1,0 +1,113 @@
+<%- include('../partials/header') %>
+<div class="dashboard-hero">
+  <div>
+    <span class="dashboard-kicker">Live PG Dashboard</span>
+    <h1><%= pg.name %></h1>
+    <p><%= pg.address %></p>
+  </div>
+  <a class="btn btn-light hero-action" href="/customers/new">Add Customer</a>
+</div>
+
+<section class="stats-grid">
+  <% [
+    ['Total Floors', stats.totalFloors, 'F'],
+    ['Total Rooms', stats.totalRooms, 'R'],
+    ['Total Beds', stats.totalBeds, 'B'],
+    ['Occupied Beds', stats.occupiedBeds, 'O'],
+    ['Available Beds', stats.availableBeds, 'A'],
+    ['Active Tenants', stats.activeTenants, 'T']
+  ].forEach(function(item, index) { %>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-<%= index %>"><%= item[2] %></div>
+      <div>
+        <span><%= item[0] %></span>
+        <strong><%= item[1] %></strong>
+      </div>
+    </div>
+  <% }) %>
+</section>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <section class="content-card h-100 dashboard-panel">
+      <div class="section-heading">
+        <div>
+          <span>Availability</span>
+          <h2>Vacancy by Sharing</h2>
+        </div>
+      </div>
+      <% const sharingKeys = Object.keys(vacancyBySharingType).sort((a, b) => Number(a) - Number(b)); %>
+      <% if (!sharingKeys.length) { %>
+        <p class="text-secondary mb-0">No rooms added yet.</p>
+      <% } %>
+      <div class="vacancy-list">
+        <% sharingKeys.forEach(function(key) { %>
+          <div class="vacancy-row">
+            <div>
+              <strong><%= key %> Sharing</strong>
+              <span>Available bed slots</span>
+            </div>
+            <span class="availability-pill"><%= vacancyBySharingType[key] %></span>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  </div>
+  <div class="col-lg-8">
+    <section class="content-card dashboard-panel">
+      <div class="section-heading">
+        <div>
+          <span>Rooms</span>
+          <h2>Floor / Room Occupancy</h2>
+        </div>
+      </div>
+      <% if (!roomsByFloor.length) { %>
+        <p class="text-secondary mb-0">Add floors and rooms to see occupancy.</p>
+      <% } %>
+      <div class="accordion" id="floorAccordion">
+        <% roomsByFloor.forEach(function(floor, floorIndex) { %>
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button class="accordion-button <%= floorIndex ? 'collapsed' : '' %>" type="button" data-bs-toggle="collapse" data-bs-target="#floor-<%= floor._id %>">
+                <%= floor.name %>
+              </button>
+            </h3>
+            <div id="floor-<%= floor._id %>" class="accordion-collapse collapse <%= floorIndex ? '' : 'show' %>" data-bs-parent="#floorAccordion">
+              <div class="accordion-body">
+                <% if (!floor.rooms.length) { %>
+                  <p class="text-secondary mb-0">No rooms on this floor.</p>
+                <% } %>
+                <div class="room-grid">
+                  <% floor.rooms.forEach(function(room) { %>
+                    <button class="room-tile" type="button" data-bs-toggle="collapse" data-bs-target="#room-beds-<%= room._id %>">
+                      <span class="room-number">Room <%= room.roomNumber %></span>
+                      <span class="room-sharing"><%= room.sharingType %> Sharing</span>
+                      <% if (room.isFull) { %>
+                        <span class="badge text-bg-danger">FULL</span>
+                      <% } else { %>
+                        <span class="badge text-bg-success"><%= room.availableBeds %> Available</span>
+                      <% } %>
+                    </button>
+                    <div class="collapse room-beds" id="room-beds-<%= room._id %>">
+                      <% room.beds.forEach(function(bed) { %>
+                        <div class="bed-row">
+                          <span>Bed <%= bed.bedNumber %></span>
+                          <% if (bed.status === 'OCCUPIED') { %>
+                            <span class="badge text-bg-warning"><%= bed.currentCustomerId ? bed.currentCustomerId.name : 'Occupied' %></span>
+                          <% } else { %>
+                            <span class="badge text-bg-success">AVAILABLE</span>
+                          <% } %>
+                        </div>
+                      <% }) %>
+                    </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  </div>
+</div>
+<%- include('../partials/footer') %>

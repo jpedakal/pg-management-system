@@ -1,0 +1,96 @@
+<%- include('../partials/header') %>
+<div class="admin-hero">
+  <div>
+    <span class="dashboard-kicker">Tenant Records</span>
+    <h1>Customers</h1>
+    <p>Filter active and historical tenants by floor, room, and stay status.</p>
+  </div>
+  <a class="btn btn-light hero-action" href="/customers/new">Add Customer</a>
+</div>
+
+<section class="content-card admin-panel mb-4">
+  <div class="section-heading">
+    <div>
+      <span>Search</span>
+      <h2>Customer Filters</h2>
+    </div>
+  </div>
+  <form class="row g-3 align-items-end" method="get" action="/customers">
+    <div class="col-md-3">
+      <label class="form-label" for="status">Status</label>
+      <select class="form-select" id="status" name="status">
+        <option value="">All</option>
+        <option value="ACTIVE" <%= filters.status === 'ACTIVE' ? 'selected' : '' %>>Active</option>
+        <option value="VACATED" <%= filters.status === 'VACATED' ? 'selected' : '' %>>Vacated</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="floorFilter">Floor</label>
+      <select class="form-select" id="floorFilter" name="floorId">
+        <option value="">All floors</option>
+        <% floors.forEach(function(floor) { %>
+          <option value="<%= floor._id %>" <%= filters.floorId === floor._id.toString() ? 'selected' : '' %>><%= floor.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="roomFilter">Room</label>
+      <select class="form-select" id="roomFilter" name="roomId">
+        <option value="">All rooms</option>
+        <% rooms.forEach(function(room) { %>
+          <option value="<%= room._id %>" <%= filters.roomId === room._id.toString() ? 'selected' : '' %>>Room <%= room.roomNumber %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-outline-primary w-100" type="submit">Apply Filters</button>
+    </div>
+  </form>
+</section>
+
+<section class="content-card admin-panel">
+  <div class="section-heading">
+    <div>
+      <span>Directory</span>
+      <h2>Customer List</h2>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle skyline-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Mobile</th>
+          <th>Floor</th>
+          <th>Room</th>
+          <th>Bed</th>
+          <th>Rent</th>
+          <th>Deposit</th>
+          <th>Joining</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% customers.forEach(function(customer) { %>
+          <tr>
+            <td><a href="/customers/<%= customer._id %>"><%= customer.name %></a></td>
+            <td><%= customer.mobile %></td>
+            <td><%= customer.floorId ? customer.floorId.name : '-' %></td>
+            <td><%= customer.roomId ? customer.roomId.roomNumber : '-' %></td>
+            <td><%= customer.bedId ? customer.bedId.bedNumber : '-' %></td>
+            <td>Rs. <%= customer.monthlyRent %></td>
+            <td>Rs. <%= customer.depositAmount %></td>
+            <td><%= customer.joiningDate ? customer.joiningDate.toISOString().slice(0, 10) : '-' %></td>
+            <td>
+              <span class="badge <%= customer.status === 'ACTIVE' ? 'text-bg-success' : 'text-bg-secondary' %>"><%= customer.status %></span>
+            </td>
+          </tr>
+        <% }) %>
+        <% if (!customers.length) { %>
+          <tr><td colspan="9" class="text-center text-secondary py-4">No customers found.</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</section>
+<%- include('../partials/footer') %>

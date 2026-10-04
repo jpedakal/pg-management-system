@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+<div class="admin-hero">
+  <div>
+    <span class="dashboard-kicker">Customer Profile</span>
+    <h1><%= customer.name %></h1>
+    <p>Customer profile and stay information.</p>
+  </div>
+  <a class="btn btn-light hero-action" href="/customers">Back to Customers</a>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <section class="content-card admin-panel">
+      <div class="section-heading">
+        <div>
+          <span>Profile</span>
+          <h2>Details</h2>
+        </div>
+      </div>
+      <dl class="row detail-list">
+        <dt class="col-sm-4">Mobile</dt><dd class="col-sm-8"><%= customer.mobile %></dd>
+        <dt class="col-sm-4">Emergency contact</dt><dd class="col-sm-8"><%= customer.emergencyContact %></dd>
+        <dt class="col-sm-4">Permanent address</dt><dd class="col-sm-8"><%= customer.permanentAddress %></dd>
+        <dt class="col-sm-4">Joining date</dt><dd class="col-sm-8"><%= customer.joiningDate.toISOString().slice(0, 10) %></dd>
+        <dt class="col-sm-4">Vacating date</dt><dd class="col-sm-8"><%= customer.vacatingDate ? customer.vacatingDate.toISOString().slice(0, 10) : '-' %></dd>
+        <dt class="col-sm-4">Monthly rent</dt><dd class="col-sm-8">Rs. <%= customer.monthlyRent %></dd>
+        <dt class="col-sm-4">Deposit amount</dt><dd class="col-sm-8">Rs. <%= customer.depositAmount %></dd>
+      </dl>
+    </section>
+  </div>
+  <div class="col-lg-4">
+    <section class="content-card admin-panel">
+      <div class="section-heading">
+        <div>
+          <span>Assignment</span>
+          <h2>Stay</h2>
+        </div>
+      </div>
+      <div class="vstack gap-2 mb-4">
+        <div class="d-flex justify-content-between"><span>Floor</span><strong><%= customer.floorId ? customer.floorId.name : '-' %></strong></div>
+        <div class="d-flex justify-content-between"><span>Room</span><strong><%= customer.roomId ? customer.roomId.roomNumber : '-' %></strong></div>
+        <div class="d-flex justify-content-between"><span>Bed</span><strong><%= customer.bedId ? customer.bedId.bedNumber : '-' %></strong></div>
+        <div class="d-flex justify-content-between"><span>Status</span><span class="badge <%= customer.status === 'ACTIVE' ? 'text-bg-success' : 'text-bg-secondary' %>"><%= customer.status %></span></div>
+      </div>
+      <% if (customer.status === 'ACTIVE') { %>
+        <form action="/customers/<%= customer._id %>/vacate" method="post" onsubmit="return confirm('Vacate this customer and make the bed available?');">
+          <label class="form-label" for="vacatingDate">Vacating date</label>
+          <input class="form-control mb-3" id="vacatingDate" name="vacatingDate" type="date" required>
+          <button class="btn btn-danger w-100" type="submit">Vacate Customer</button>
+        </form>
+      <% } %>
+    </section>
+  </div>
+</div>
+<%- include('../partials/footer') %>

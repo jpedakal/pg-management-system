@@ -1,0 +1,78 @@
+<%- include('../partials/header') %>
+<div class="admin-hero">
+  <div>
+    <span class="dashboard-kicker">Tenant Onboarding</span>
+    <h1>Add Customer</h1>
+    <p>Assign a tenant to an available bed and capture rent, deposit, and contact details.</p>
+  </div>
+</div>
+
+<section class="content-card admin-panel">
+  <form action="/customers" method="post" class="row g-3" data-customer-form>
+    <div class="col-12">
+      <div class="form-section-title">
+        <span>Step 1</span>
+        <strong>Stay Assignment</strong>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="floorId">Floor</label>
+      <select class="form-select" id="floorId" name="floorId" data-floor-select required>
+        <option value="">Choose floor</option>
+        <% floors.forEach(function(floor) { %>
+          <option value="<%= floor._id %>"><%= floor.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="roomId">Room</label>
+      <select class="form-select" id="roomId" name="roomId" data-room-select required disabled>
+        <option value="">Choose room</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="bedId">Bed</label>
+      <select class="form-select" id="bedId" name="bedId" data-bed-select required disabled>
+        <option value="">Choose bed</option>
+      </select>
+    </div>
+    <div class="col-12">
+      <div class="form-section-title">
+        <span>Step 2</span>
+        <strong>Tenant Information</strong>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label" for="name">Full name</label>
+      <input class="form-control" id="name" name="name" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="mobile">Mobile</label>
+      <input class="form-control" id="mobile" name="mobile" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="emergencyContact">Emergency contact</label>
+      <input class="form-control" id="emergencyContact" name="emergencyContact" required>
+    </div>
+    <div class="col-12">
+      <label class="form-label" for="permanentAddress">Permanent address</label>
+      <textarea class="form-control" id="permanentAddress" name="permanentAddress" rows="3" required></textarea>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="joiningDate">Joining date</label>
+      <input class="form-control" id="joiningDate" name="joiningDate" type="date" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="monthlyRent">Monthly rent</label>
+      <input class="form-control" id="monthlyRent" name="monthlyRent" type="number" min="0" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="depositAmount">Deposit amount</label>
+      <input class="form-control" id="depositAmount" name="depositAmount" type="number" min="0" required>
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary px-4" type="submit">Save Customer</button>
+    </div>
+  </form>
+</section>
+<%- include('../partials/footer') %>

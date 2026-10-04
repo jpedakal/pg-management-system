@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+<div class="auth-brand-panel">
+  <span class="auth-kicker">PG Management</span>
+  <h1>SKY LINE</h1>
+  <p>Create your owner account and start building your PG occupancy view.</p>
+</div>
+<div class="auth-card">
+  <div class="auth-logo">S</div>
+  <h2 class="h3 mb-2">Create account</h2>
+  <p class="text-secondary mb-4">Set up your SKY LINE owner login.</p>
+  <form action="/register" method="post" class="vstack gap-3">
+    <div>
+      <label class="form-label" for="name">Owner name</label>
+      <input class="form-control" id="name" name="name" required>
+    </div>
+    <div>
+      <label class="form-label" for="email">Email</label>
+      <input class="form-control" id="email" name="email" type="email" required>
+    </div>
+    <div>
+      <label class="form-label" for="password">Password</label>
+      <input class="form-control" id="password" name="password" type="password" minlength="6" required>
+    </div>
+    <div>
+      <label class="form-label" for="confirmPassword">Confirm password</label>
+      <input class="form-control" id="confirmPassword" name="confirmPassword" type="password" minlength="6" required>
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Create account</button>
+  </form>
+  <p class="mt-4 mb-0 text-center text-secondary">Already registered? <a href="/login">Login</a></p>
+</div>
+<%- include('../partials/footer') %>

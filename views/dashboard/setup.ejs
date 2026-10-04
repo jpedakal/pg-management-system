@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+<section class="content-card setup-panel">
+  <h1 class="h3 mb-2">Set up your PG</h1>
+  <p class="text-secondary mb-4">Add the PG profile first. Floors, rooms, beds, and tenants will belong to this PG.</p>
+  <form action="/dashboard/pg" method="post" class="vstack gap-3">
+    <div>
+      <label class="form-label" for="name">PG name</label>
+      <input class="form-control" id="name" name="name" required>
+    </div>
+    <div>
+      <label class="form-label" for="address">Address</label>
+      <textarea class="form-control" id="address" name="address" rows="4" required></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">Save PG</button>
+  </form>
+</section>
+<%- include('../partials/footer') %>
