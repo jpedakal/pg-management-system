@@ -10,15 +10,14 @@
 
 <section class="stats-grid">
   <% [
-    ['Total Floors', stats.totalFloors, 'F'],
-    ['Total Rooms', stats.totalRooms, 'R'],
-    ['Total Beds', stats.totalBeds, 'B'],
-    ['Occupied Beds', stats.occupiedBeds, 'O'],
-    ['Available Beds', stats.availableBeds, 'A'],
-    ['Active Tenants', stats.activeTenants, 'T']
-  ].forEach(function(item, index) { %>
+    ['Total Floors', stats.totalFloors],
+    ['Total Rooms', stats.totalRooms],
+    ['Total Beds', stats.totalBeds],
+    ['Occupied Beds', stats.occupiedBeds],
+    ['Available Beds', stats.availableBeds],
+    ['Active Tenants', stats.activeTenants]
+  ].forEach(function(item) { %>
     <div class="stat-card">
-      <div class="stat-icon stat-icon-<%= index %>"><%= item[2] %></div>
       <div>
         <span><%= item[0] %></span>
         <strong><%= item[1] %></strong>

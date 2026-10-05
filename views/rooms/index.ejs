@@ -60,7 +60,7 @@
           const available = counts.total - counts.occupied;
         %>
           <div class="room-admin-row elevated-row">
-            <form action="/rooms/<%= room._id %>?_method=PUT" method="post" class="row g-2 align-items-end flex-grow-1">
+            <form action="/rooms/<%= room._id %>?_method=PUT" method="post" class="row g-2 align-items-end flex-grow-1 inventory-edit-form room-edit-form">
               <div class="col-md-3">
                 <label class="form-label">Floor</label>
                 <select class="form-select" name="floorId" required>
@@ -82,7 +82,7 @@
                 <input class="form-control" name="monthlyRent" type="number" min="0" value="<%= room.monthlyRent %>" required>
               </div>
               <div class="col-md-3 action-col">
-                <button class="btn btn-outline-primary w-100" type="submit">Save</button>
+                <button class="btn btn-outline-primary row-action-button" type="submit">Save</button>
               </div>
               <div class="col-12">
                 <span class="badge text-bg-secondary"><%= counts.total %> beds</span>
@@ -91,7 +91,7 @@
               </div>
             </form>
             <form class="row-action-form" action="/rooms/<%= room._id %>?_method=DELETE" method="post" onsubmit="return confirm('Delete this room and its available beds?');">
-              <button class="btn btn-outline-danger" type="submit">Delete</button>
+              <button class="btn btn-outline-danger row-action-button" type="submit">Delete</button>
             </form>
           </div>
         <% }) %>

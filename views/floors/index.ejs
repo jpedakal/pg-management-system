@@ -1,7 +1,6 @@
 <%- include('../partials/header') %>
 <div class="admin-hero">
   <div>
-    <span class="dashboard-kicker">Inventory Setup</span>
     <h1>Floors & Rooms</h1>
     <p>Create flexible floor labels such as Ground Floor, First Floor, and Second Floor.</p>
   </div>
@@ -34,7 +33,7 @@
     <section class="content-card admin-panel">
       <div class="section-heading">
         <div>
-          <span>Current setup</span>
+          <span>Floors</span>
           <h2>Existing Floors</h2>
         </div>
       </div>
@@ -44,7 +43,7 @@
       <div class="vstack gap-3">
         <% floors.forEach(function(floor) { %>
           <div class="editable-row">
-            <form action="/floors/<%= floor._id %>?_method=PUT" method="post" class="row g-2 align-items-end flex-grow-1">
+            <form action="/floors/<%= floor._id %>?_method=PUT" method="post" class="row g-2 align-items-end flex-grow-1 inventory-edit-form">
               <div class="col-md-6">
                 <label class="form-label">Name</label>
                 <input class="form-control" name="name" value="<%= floor.name %>" required>
@@ -54,11 +53,11 @@
                 <input class="form-control" name="floorNumber" type="number" min="0" value="<%= floor.floorNumber %>" required>
               </div>
               <div class="col-md-3 action-col">
-                <button class="btn btn-outline-primary w-100" type="submit">Save</button>
+                <button class="btn btn-outline-primary row-action-button" type="submit">Save</button>
               </div>
             </form>
             <form class="row-action-form" action="/floors/<%= floor._id %>?_method=DELETE" method="post" onsubmit="return confirm('Delete this floor and any empty rooms under it?');">
-              <button class="btn btn-outline-danger" type="submit">Delete</button>
+              <button class="btn btn-outline-danger row-action-button" type="submit">Delete</button>
             </form>
           </div>
         <% }) %>
