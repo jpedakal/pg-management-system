@@ -14,7 +14,7 @@ async function createBedsForRoom(pgId, roomId, from, to) {
 
 exports.index = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.redirect('/dashboard');
 
     const [floors, rooms] = await Promise.all([
@@ -46,7 +46,7 @@ exports.index = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.redirect('/dashboard');
 
     const { floorId, roomNumber, sharingType, monthlyRent } = req.body;
@@ -81,7 +81,7 @@ exports.create = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.redirect('/dashboard');
 
     const { floorId, roomNumber, sharingType, monthlyRent } = req.body;
@@ -140,7 +140,7 @@ exports.update = async (req, res, next) => {
 
 exports.remove = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.redirect('/dashboard');
 
     const room = await Room.findOne({ _id: req.params.id, pgId: pg._id });
@@ -166,7 +166,7 @@ exports.remove = async (req, res, next) => {
 
 exports.byFloor = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.status(404).json([]);
 
     const rooms = await Room.find({ pgId: pg._id, floorId: req.params.floorId })
@@ -180,7 +180,7 @@ exports.byFloor = async (req, res, next) => {
 
 exports.availableBeds = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.status(404).json([]);
 
     const room = await Room.findOne({ _id: req.params.roomId, pgId: pg._id });

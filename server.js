@@ -14,6 +14,7 @@ const dashboardRoutes = require('./routes/dashboard.routes');
 const floorRoutes = require('./routes/floor.routes');
 const roomRoutes = require('./routes/room.routes');
 const customerRoutes = require('./routes/customer.routes');
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -51,6 +52,7 @@ app.use('/dashboard', dashboardRoutes);
 app.use('/floors', floorRoutes);
 app.use('/rooms', roomRoutes);
 app.use('/customers', customerRoutes);
+app.use('/users', userRoutes);
 
 app.get('/', (req, res) => {
   if (req.session.userId) return res.redirect('/dashboard');

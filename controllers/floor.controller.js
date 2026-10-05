@@ -6,7 +6,7 @@ const { flash } = require('../middleware/auth.middleware');
 
 exports.index = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.redirect('/dashboard');
 
     const floors = await Floor.find({ pgId: pg._id }).sort({ floorNumber: 1 }).lean();
@@ -18,7 +18,7 @@ exports.index = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.redirect('/dashboard');
 
     const { name, floorNumber } = req.body;
@@ -34,7 +34,7 @@ exports.create = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.redirect('/dashboard');
 
     const { name, floorNumber } = req.body;
@@ -56,7 +56,7 @@ exports.update = async (req, res, next) => {
 
 exports.remove = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
     if (!pg) return res.redirect('/dashboard');
 
     const floor = await Floor.findOne({ _id: req.params.id, pgId: pg._id });

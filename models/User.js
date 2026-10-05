@@ -21,8 +21,19 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['OWNER'],
+      enum: ['OWNER', 'STAFF'],
       default: 'OWNER'
+    },
+    accountOwnerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+      index: true
+    },
+    status: {
+      type: String,
+      enum: ['ACTIVE', 'INACTIVE'],
+      default: 'ACTIVE'
     }
   },
   { timestamps: true }

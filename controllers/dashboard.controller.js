@@ -13,7 +13,7 @@ exports.getOwnerPG = getOwnerPG;
 
 exports.index = async (req, res, next) => {
   try {
-    const pg = await getOwnerPG(req.session.userId);
+    const pg = await getOwnerPG(req.session.ownerId || req.session.userId);
 
     if (!pg) {
       return res.render('dashboard/setup', { title: 'Setup PG' });
@@ -91,7 +91,7 @@ exports.createPG = async (req, res, next) => {
       return res.redirect('/dashboard');
     }
 
-    await PG.create({ name, address, ownerId: req.session.userId });
+    await PG.create({ name, address, ownerId: req.session.ownerId || req.session.userId });
     flash(req, 'success', 'PG created. You can now add floors and rooms.');
     return res.redirect('/dashboard');
   } catch (error) {

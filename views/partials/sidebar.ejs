@@ -11,6 +11,9 @@
     <a class="nav-link <%= currentPath.startsWith('/floors') || currentPath.startsWith('/rooms') ? 'active' : '' %>" href="/floors">Floors & Rooms</a>
     <a class="nav-link <%= currentPath === '/customers' ? 'active' : '' %>" href="/customers">Customers</a>
     <a class="nav-link <%= currentPath === '/customers/new' ? 'active' : '' %>" href="/customers/new">Add Customer</a>
+    <% if (currentUser.canManageUsers) { %>
+      <a class="nav-link <%= currentPath.startsWith('/users') ? 'active' : '' %>" href="/users">Users</a>
+    <% } %>
   </nav>
   <form action="/logout" method="post" class="mt-auto">
     <button class="btn btn-outline-light w-100" type="submit">Logout</button>
